@@ -1,0 +1,216 @@
+﻿@{
+    Layout = null;
+}
+@model FIRArrestedAccusedDetails
+@if (Model.ArrestAddressList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        Witness Details
+    </div>
+    @foreach (var item in Model.ArrestAddressList)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Witness Full Name</label>
+                <label class="form-label">@item.WitnessFullName</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Witness Statement</label>
+                <label class="form-label">@item.WitnessStatement</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Witness Address</label>
+                <label class="form-label">@item.WitnessAddress</label>
+            </div>
+        </div>
+    }
+}
+@if (Model.FIRACTSectionList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        Act Section
+    </div>
+    @foreach (var item in Model.FIRACTSectionList)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Act Name</label>
+                <label class="form-label">@item.ActName</label>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Section</label>
+                <label class="form-label">@item.Sec</label>
+            </div>
+        </div>
+    }
+}
+@if (Model.ArrestPersonDetailList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        Arrest Details
+    </div>
+    @foreach (var item in Model.ArrestPersonDetailList)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">FIR Reg Date</label>
+                <label class="form-label">@item.FIRDate.ToShortDateString()</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">District Name</label>
+                <label class="form-label">@item.DistrictName</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Police Station Name</label>
+                <label class="form-label">@item.PoliceStationName</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Arrest Year</label>
+                <label class="form-label">@item.ArrestYear</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Arrest Surrender Date</label>
+                <label class="form-label">@item.ArrestSurrenderDate.ToShortDateString()</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Arrest Surrender Time</label>
+                <label class="form-label">@item.ArrestSurrenderTime.ToShortTimeString()</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">G.D Number</label>
+                <label class="form-label">@item.GDNumber</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Arrest District Name</label>
+                <label class="form-label">@item.ArrestDistrictName</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Arrest Police station Name</label>
+                <label class="form-label">@item.ArrestPolicestationName</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Surrend In Court Code</label>
+                <label class="form-label">@item.SurrendInCourtCode</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Court Name</label>
+                <label class="form-label">@item.CourtName</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Relative Name</label>
+                <label class="form-label">@item.RelativeName</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Accused Category Name</label>
+                <label class="form-label">@item.AccusedCategoryName</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Accused Full Address</label>
+                <label class="form-label">@item.AccusedFullAddress</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Address PS</label>
+                <label class="form-label">@item.AddPS</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Mobile</label>
+                <label class="form-label">@item.Mobile</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Telephone</label>
+                <label class="form-label">@item.Telephone</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">alias1</label>
+                <label class="form-label">@item.alias1</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">alias2</label>
+                <label class="form-label">@item.alias2</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Accused Full Name</label>
+                <label class="form-label">@item.AccusedFullName</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Accused Nationality</label>
+                <label class="form-label">@item.AccusedNationality</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Age</label>
+                <label class="form-label">@item.Age</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Place Of Arrest</label>
+                <label class="form-label">@item.PlaceOfArrest</label>
+            </div>
+        </div>
+    }
+}
+@if (Model.AccusedPhyDescList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        Arrested Person Details
+    </div>
+    @foreach (var item in Model.AccusedPhyDescList)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Gender Name</label>
+                <label class="form-label">@item.GenderName</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">DateOfBirth</label>
+                <label class="form-label">@item.DateOfBirth</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">LivingStatusCode</label>
+                <label class="form-label">@item.LivingStatusCode</label>
+            </div>
+        </div>
+    }
+}
+@if (Model.AccusedPhotoList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        Arrested Profile Photos
+    </div>
+    @foreach (var item in Model.AccusedPhotoList)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <img src="@item.Photos" class="img-thumbnail" alt="image not found">
+                <label class="form-label fw-bold">@item.PhotoName</label>
+            </div>
+        </div>
+    }
+}
+@if (Model.IODetailList.Any())
+{
+    <div class="badge bg-primary text-wrap" style="width: 69rem;">
+        IO Details
+    </div>
+    @foreach (var item in Model.IODetailList)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">IO Name</label>
+                <label class="form-label">@item.IOName</label>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">IO Rank</label>
+                <label class="form-label">@item.Rank</label>
+            </div>
+        </div>
+    }
+}

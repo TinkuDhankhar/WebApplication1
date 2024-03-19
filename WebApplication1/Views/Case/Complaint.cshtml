@@ -1,0 +1,156 @@
+﻿@model ComplaintModel
+@{
+    ViewData["Title"] = "Complaint";
+}
+<form asp-action="Complaint" asp-controller="Case" asp-area="">
+    <div class="row">
+        <div class="card card-body">
+            <div class="col-md-4">
+                <label>Mail From: -</label>
+                <select class="form-select" asp-for="MailFrom">
+                    <option value="LoginUser">Login User</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Mail To: -</label>
+                <input asp-for="MailTo" class="form-control" placeholder="Enter mail Id" />
+                <span asp-validation-for="MailTo" class="text-danger"></span>
+            </div>
+            <div class="col-md-2">
+                <label>Issue To: -</label>
+                <input asp-for="IssueTo" class="form-control" placeholder="Enter issue to" />
+                <span asp-validation-for="IssueTo" class="text-danger"></span>
+            </div>
+            <div class="col-md-2">
+                <label>Issue From: -</label>
+                <input asp-for="IssueFrom" class="form-control" placeholder="Enter issue from" />
+                <span asp-validation-for="IssueFrom" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <label>Subject: -</label>
+        <input type="hidden" asp-for="subject" />
+        @if (Model.complaintTypesList.Any())
+        {
+            foreach (var item in Model.complaintTypesList.GroupBy(g => g.GroupName).ToList())
+            {
+                <div class="col-md-2" id="@item.FirstOrDefault().GroupName">
+                    <label class="form-label">@item.FirstOrDefault().GroupName</label>
+                    @for (int i = 0; i < item.ToList().Count; i++)
+                    {
+                        <input type="hidden" asp-for="@item.ToList()[i].id" name="complaintTypesList.id" />
+                        <input type="hidden" asp-for="@item.ToList()[i].IsSelected" value="" name="complaintTypesList.IsSelected" />
+                        <input type="hidden" asp-for="@item.ToList()[i].ComplainTypeSubjectName" name="complaintTypesList.ComplainTypeSubjectName" />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="myfunction('@item.ToList()[i].ComplainTypeSubjectName')" name="rdobtn" asp-for="@item.ToList()[i].IsSelected" id="opt-@item.ToList()[i].id" value="@item.ToList()[i].id" />
+                            <label class="form-check-label" for="opt-@item.ToList()[i].id">@item.ToList()[i].ComplainTypeSubjectName</label>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        <span asp-validation-for="@Model.MailSubject" class="text-dark"></span>
+    </div>
+    <div class="row">
+        <div class="card card-body">
+            <div class="col-md-6">
+                <input type="submit" class="btn btn-outline-success w-100" value="Send" />
+            </div>
+            <div class="col-md-6">
+                <input type="button" class="btn btn-outline-danger w-100" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                keyboard: false
+            });
+            if ('@Model.subject' === 'showpopup') {
+                exampleModal.show();
+            } else {
+                exampleModal.hide();
+            }
+        });
+        function myfunction(id) {
+            let subject = $("input[name='subject']").val();
+            if (subject === '') {
+                subject += `${id},`;
+            }
+            else {
+                if (!subject.includes(id)) {
+                    subject += `${id},`;
+                }
+                else {
+                    let ar = subject.split(',');
+                    subject = '';
+                    for (var i = 0; i < ar.length; i++) {
+                        if (ar[i] === id) {
+                            ar.splice(i, 1);
+                        }
+                        else {
+                            subject += `${ar[i]},`;
+                        }
+                    }
+                }
+            }
+            $("input[name='subject']").val(subject);
+        }
+        async function copysubjectText() {
+            try {
+                let text = document.getElementById('subjectId').innerHTML;
+                await navigator.clipboard.writeText(text);
+                /* Resolved - text copied to clipboard successfully */
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                /* Rejected - text failed to copy to the clipboard */
+            }
+            alert("Text has been copied!");
+        }
+        async function copymailBodyText() {
+            try {
+                let text = document.getElementById('mailBodyId').innerText;
+                await navigator.clipboard.writeText(text);
+                /* Resolved - text copied to clipboard successfully */
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                /* Rejected - text failed to copy to the clipboard */
+            }
+            // Give a visual feedback to the user that the text has been copied
+            alert("Text has been copied!");
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mail</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Mail Subject:-</label>
+                        <label class="form-label" id="subjectId" onclick="copysubjectText()" title="Click to copy text">@Model.MailSubject</label>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="form-label">Mail Message:-</label>
+                    <label class="form-label" id="mailBodyId" onclick="copymailBodyText()" title="Click to copy text">@Html.Raw(Model.MailBody)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a asp-action="MailLogs" asp-controller="Case" asp-area="" class="btn btn-outline-success">OK</a>
+            </div>
+        </div>
+    </div>
+</div>

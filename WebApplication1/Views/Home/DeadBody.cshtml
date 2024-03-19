@@ -1,0 +1,79 @@
+﻿@model DeadBody
+@{
+    ViewData["Title"] = "DeadBody";
+    int i = 1;
+}
+<div class="row">
+    <div class="col-md-3">
+        <label class="label-form">Police Station :-</label>
+        <select asp-for="PoliceStationName" class="form-select" asp-items="@(new SelectList(Model.PoliceStationList, nameof(Model.PoliceStationName), nameof(Model.PoliceStationName)))">
+            <option value="">--Select--</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="label-form">Search From :-</label>
+        <input asp-for="SearchFrom" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="label-form">Search From :-</label>
+        <input asp-for="SearchTo" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <input type="button" id="SearchBtn" name="SearchBtn" value="Search" class="btn btn-outline-success" />
+    </div>
+</div>
+
+<table class="table table-borderless table-hover iopending table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">DeadBody Inquest Num</th>
+            <th scope="col">Registration Num</th>
+            <th scope="col">Name</th>
+            <th scope="col">Death Type</th>
+            <th scope="col">DeadBody Type</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Police Station</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DeadBodyList)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@item.DBinquestNum</td>
+                <td>@item.RegistrationNum</td>
+                <td>@item.Name</td>
+                <td>@item.DeathType</td>
+                <td>@item.DeadBodyType</td>
+                <td>@item.Date</td>
+                <td>@item.Status</td>
+                <td>@item.PoliceStation</td>
+                @{
+                    i += 1;
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        $("input[name='SearchBtn']").click(() => {
+            $(".iopending").find('tr:gt(0)').remove();
+            $.post("/Home/DeadBodySearch", { ps: $("select[name='PoliceStationName'] option:selected").val(), from: $("input[name='SearchFrom']").val(), to: $("input[name='SearchTo']").val() }, (data) => {
+                for (var i = 0; i < data.length; i++) {
+                    $(".iopending").append(`<tr><th scope="row">${i+1}</th>
+                    <td>${data.dBinquestNum}</td>
+                    <td>${data.registrationNum}</td>
+                    <td>${data.name}</td>
+                    <td>${data.deathType}</td>
+                    <td>${deadBodyType}</td>
+                    <td>${data.date}</td>
+                    <td>${data.status}</td>
+                    <td>${data.policeStation}</td></tr>`);
+                }
+            });
+        });
+    </script>
+}

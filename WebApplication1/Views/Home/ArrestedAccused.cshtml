@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ArrestedAccused>
+@{
+    ViewData["Title"] = "ArrestedAccused";
+    int i = 1;
+}
+<table class="table table-borderless table-hover iopending table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Arrest Person Name</th>
+            <th scope="col">Accused Address</th>
+            <th scope="col">FIR No</th>
+            <th scope="col">Arrest Date</th>
+            <th scope="col">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@item.ArrestPersonName</td>
+                <td>@item.AccusedAddress</td>
+                <td>@item.FIRNo</td>
+                <td>@item.ArrestDate</td>
+                <td><button class="btn btn-outline-info" onclick="viewDetails('@item.FIRAId')">View Details</button></td>
+                @{
+                    i += 1;
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        function viewDetails(id) {
+            $(".modal-body").html('');
+            $.get("/Home/ArrestedAccusedDetailsById", { id: id }, (response) => {
+                var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                    keyboard: false
+                });
+                if (response !== null && response !== undefined && response !== '') {
+                    $(".modal-body").html(response);
+                    exampleModal.show();
+                } else {
+                    exampleModal.hide();
+                }
+            });
+        }
+    </script>
+}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Arrested Details</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-success" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

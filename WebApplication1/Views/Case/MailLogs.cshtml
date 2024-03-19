@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ComplaintModel>
+@{
+    ViewData["Title"] = "MailLogs";
+}
+<div class="container">
+    <div class="card card-body">
+        <table class="table table-borderless table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mail To</th>
+                    <th>Mail From</th>
+                    <th>Mail Subject</th>
+                    <th>Mail Body</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MailTo</td>
+                        <td>@item.MailFrom</td>
+                        <td>@item.MailSubject</td>
+                        <td>@Html.Raw(item.MailBody)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

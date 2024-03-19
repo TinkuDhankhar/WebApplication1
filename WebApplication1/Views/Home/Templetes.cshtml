@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ComplaintModel>
+@{
+    ViewData["Title"] = "Templetes";
+    int i = 1;
+}
+<a class="btn btn-link" asp-action="MailTemplete" asp-controller="Home" asp-area="">Create New Template</a>
+<table class="table table-borderless table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Mail Subject</th>
+            <th scope="col">Mail Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@item.MailSubject</td>
+                    <td>@Html.Raw(item.MailBody)</td>
+                    @{
+                        i += 1;
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebApplication1.Models.MissingPerson>
+@{
+    ViewData["Title"] = "MissingPerson";
+    int i = 1;
+}
+<table class="table table-borderless table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonRegNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonRegNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonRegData)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MissingPersonCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FIRNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PoliceStation)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@i</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonRegNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonRegNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonRegData)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MissingPersonCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FIRNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.District)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PoliceStation)
+                </td>
+                @{
+                    i += 1;
+                }
+            </tr>
+        }
+    </tbody>
+</table>

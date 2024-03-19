@@ -1,0 +1,126 @@
+﻿@model PendingCase
+@{
+    ViewData["Title"] = "Home Page";
+    int i = 1;
+}
+<a href="javascript:genPDF()" class="btn btn-link">
+    <i class="far fa-file-pdf"></i> &nbsp; Download PDF
+</a>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-sm-6">
+        <select asp-for="District" asp-items="@(new SelectList(Model.DistrictList, nameof(Model.District), nameof(Model.District)))" class="form-select">
+            <option value="">--Select--</option>
+        </select>
+    </div>
+    <div class="col-md-6 col-sm-6 col-sm-6">
+        <select asp-for="PS" class="form-select">
+            <option value="">--Select--</option>
+        </select>
+    </div>
+</div>
+
+<table class="table table-borderless table-hover iopending table-striped">
+    <thead class="table-info">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">IO Name</th>
+            <th scope="col">Distict</th>
+            <th scope="col">Police Station</th>
+            <th scope="col">Pending Case</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PendingCaseList)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td><a class="btn btn-link" href="javascript:;" onclick="GetIOAllData('@item.PersonFullName')">@item.PersonFullName</a></td>
+                <td>@item.District</td>
+                <td>@item.PS</td>
+                <td><a class="btn btn-link" href="javascript:;" onclick="ShowAllData('@item.PersonFullName', '@item.District', '@item.PS')">@item.Number</a></td>
+                @{
+                    i += 1;
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+            keyboard: false
+        });
+        function GetIOAllData(name) { 
+            $("#exampleModalLabel").html(`IO Name : ${name}`);
+            $("#tbl").find('tr:gt(0)').remove();
+            $.get("/Home/GetIOAllCaseDetails", { IOName: name}, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#tbl").append(`<tr><td>${i + 1}</td><td>${data[i].pscd}</td><td>${data[i].ps}</td><td>${data[i].firsrNum}</td><td>${data[i].firRegNum}</td><td>${data[i].firRegDate}</td><td>${data[i].firStatusType}</td></tr>`)
+                }
+            });
+            exampleModal.show();
+        }
+        function ShowAllData(name, dist, ps) {
+
+            $("#exampleModalLabel").html(`IO Name : ${name} - District : ${dist} - Police Station : ${ps}`);
+            $("#tbl").find('tr:gt(0)').remove();
+            $.get("/Home/GetIOCaseDetails", { IOName: name, dist: dist, ps: ps }, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#tbl").append(`<tr><td>${i + 1}</td><td>${data[i].pscd}</td><td>${data[i].ps}</td><td>${data[i].firsrNum}</td><td>${data[i].firRegNum}</td><td>${data[i].firRegDate}</td><td>${data[i].firStatusType}</td></tr>`)
+                }
+            });
+            exampleModal.show();
+        };
+        $("select[name='District']").change((e) => {
+            $("#PS").find('option:gt(0)').remove();
+            $.get("/Home/GetPoliceStationByName", { Distict: e.target.value }, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#PS").append(`<option value="${data[i].ps}">${data[i].ps}</option>`)
+                }
+            });
+        });
+        $("select[name='PS']").change((e) => {
+            $(".iopending").find('tr:gt(0)').remove();
+            $.get("/Home/GetIOPendinByName", { Distict: $("select[name='District'] option:selected").val(), ps: e.target.value }, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $(".iopending").append(`<tr><th  scope="row">${i + 1}</th><td><a href="javascript:;" onclick="ShowAllData('${data[i].personFullName}', '${data[i].district}', '${data[i].ps}')"/>${data[i].personFullName}</td><td>${data[i].district}</td><td>${data[i].ps}</td><td>${data[i].number}</td></tr>`);
+                }
+            });
+        });
+    </script>
+}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="tbl" class="table table-borderless table-hover table-striped" width="100%">
+                    <thead class="table-info">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">PSCD</th>
+                            <th scope="col">PS</th>
+                            <th scope="col">FIR Serial No</th>
+                            <th scope="col">FIR Reg No</th>
+                            <th scope="col">FIR Reg Date</th>
+                            <th scope="col">FIR Status Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

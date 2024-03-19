@@ -1,0 +1,64 @@
+﻿@model ComplaintModel
+@{
+    ViewData["Title"] = "MailTemplete";
+}
+<form asp-action="MailTemplete" asp-controller="Home" asp-area="" autocomplete="off" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Mail Subject:-</label>
+            <select asp-for="MailFrom" class="form-select">
+                <option value="0">--Select--</option>
+                <optgroup label="CCTNS PORTAL">
+                    <option value="CCTNS">CCTNS NOT WORKING</option>
+                    <option value="CCTNS">CCTNS NOT LOGIN</option>
+                    <option value="CCTNS">CCTNS PAGE NOT OPEN</option>
+                    <option value="CCTNS">CCTNS PAGE NOT WORKING</option>
+                    <option value="CCTNS">CCTNS PAGE OPEN BUT DATA NOT ADDED</option>
+                </optgroup>
+                <optgroup label="INTERNET">
+                    <option value="INTERNET">INTERNET NOT WORKING</option>
+                    <option value="INTERNET">INTERNET WORKING BUT LATE WORKING</option>
+                </optgroup>
+                <optgroup label="ASSAM COPS">
+                    <option value="ASSAM">ASSAM COPS PAGE NOT WORKING</option>
+                    <option value="ASSAM">ASSAM COPS NOT WORKING</option>
+                    <option value="ASSAM">ASSAM COPS WORKING BUT PAGE NOT WORKING</option>
+                </optgroup>
+            </select>
+            <span class="text-danger" asp-validation-for="MailFrom"></span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Mail Message : -</label>
+            <textarea asp-for="MailBody" class="form-control"></textarea>
+            <span class="text-danger" asp-validation-for="MailBody"></span>
+        </div>
+    </div>
+    <div class="row">
+        <label class="form-label">Mail Subject : -</label>
+        <input asp-for="MailSubject" class="form-control" placeholder="Enter mail Subject" />
+        <span class="text-danger" asp-validation-for="MailSubject"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <input type="submit" class="btn btn-outline-success w-100" value="Save Content" />
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-outline-danger w-100" asp-action="Templetes" asp-controller="Home" asp-area="">Cancel</a>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#MailBody').summernote({
+                placeholder: 'Enter your mail content.....',
+                tabsize: 2,
+                height: 100
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
